@@ -7,11 +7,11 @@ Getting started
 composer install
 ```
 
-1 Rename config/params.example.php to config/params.php and make necessary modifications
+2 Rename config/params.example.php to config/params.php and make necessary modifications
 
-2 Rename config/db.default.php to config/db.php and make necessary modifications
+3 Rename config/db.default.php to config/db.php and make necessary modifications
 
-3 Create table for entries in the database
+4 Create table for entries in the database
 
 ```
 create table entry
@@ -24,7 +24,7 @@ create table entry
 );
 ```
 
-4 Run migrations
+5 Run migrations
 
 ```
 php yii migrate
