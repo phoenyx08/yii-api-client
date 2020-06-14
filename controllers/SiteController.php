@@ -2,7 +2,10 @@
 
 namespace app\controllers;
 
+use app\models\Entry;
 use Yii;
+use yii\data\ActiveDataProvider;
+use yii\data\Pagination;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
@@ -12,6 +15,7 @@ use app\models\ContactForm;
 
 class SiteController extends Controller
 {
+
     /**
      * {@inheritdoc}
      */
@@ -19,18 +23,18 @@ class SiteController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout'],
+                'class' => AccessControl::class,
+                'only' => ['logout', 'index'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -61,7 +65,23 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $query = Entry::find()->orderBy(['last_modify'=> SORT_DESC]);
+
+        $pagination = new Pagination([
+            'defaultPageSize' => 10,
+            'totalCount' => $query->count(),
+        ]);
+
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => $pagination,
+        ]);
+
+
+        return $this->render('index', [
+            'provider' => $provider,
+        ]);
+
     }
 
     /**
